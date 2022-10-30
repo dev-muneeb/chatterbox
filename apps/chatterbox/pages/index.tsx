@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from 'socket.io-client';
 import { uniqueNamesGenerator, starWars, colors } from 'unique-names-generator';
+import { FixedSizeList as List, ListChildComponentProps } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 export type Message = {
     text: string;
@@ -19,10 +21,12 @@ const USER = {
     }),
 };
 
+
+
 export default function Home() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState<Message>();
-    const viewRef = useRef<HTMLDivElement>(null);
+    const viewRef = useRef<List<any>>(null);
 
     useEffect(() => {
         socket = io("http://localhost:5500", {
@@ -39,12 +43,7 @@ export default function Home() {
     }, []);
 
     useEffect(() =>{
-        viewRef?.current?.scrollTo({
-            top: viewRef?.current?.scrollHeight,
-            left: 0,
-            behavior: 'smooth'
-        });
-
+        viewRef?.current?.scrollToItem(messages.length - 1);
     }, [messages])
 
     const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -59,21 +58,34 @@ export default function Home() {
         }
     }
 
-    return (
-    <div className="mt-5 mr-5 ml-5 mb-5">
-        <div className="text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600">
-            <div ref={viewRef} className="overflow-auto" style={{ height: '80vh' }}>
-                <ul className="divide-y-2 dark:divide-gray-100">
-                    {messages.map((item, index) => (
-                    <li key={index} className="p-3 dark:text-white">
-                        <span className="`text-md font-bold mr-2" style={{ color: item.color }}>{item.userId}</span>
-                        {item.text}
-                    </li>
-                    ))}
-                </ul>
+    const Row = ({ index, style }: ListChildComponentProps) => 
+    {    
+        const item = messages[index]
+        return (
+            <div key={index} className="p-3 dark:text-white" style={style}>
+                <span className="`text-md font-bold mr-2" style={{ color: item.color }}>{item.userId}</span>
+                {item.text}
             </div>
-        </div>
-        <form onSubmit={handleSend} className="mt-10">   
+        );
+    }
+
+    return (
+    <div className="mt-5 mr-5 ml-5 mb-5" style={{ height: '80vh' }}>
+            <AutoSizer>
+                {({ height, width }) => (
+                <List
+                    className="text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                    height={height}
+                    itemCount={messages.length}
+                    itemSize={40}
+                    width={width}
+                    ref={viewRef}
+                >
+                  {Row}
+                </List>
+                )}
+            </AutoSizer>
+        <form onSubmit={handleSend} className="mt-10 fixed bottom-5 left-5 right-5">   
            <div className="relative">
                 <input 
                     id="message"
