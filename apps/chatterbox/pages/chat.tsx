@@ -2,15 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from 'socket.io-client';
 import { FixedSizeList as List, ListChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { User } from "./index";
 
 export type Props = {
     user: User
-}
-
-export type User = {
-    room: string;
-    name: string;
-    color: string;
 }
 
 export type Message = {
