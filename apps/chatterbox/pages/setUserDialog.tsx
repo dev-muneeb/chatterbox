@@ -1,20 +1,19 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import ColorCombo from './colorCombo';
+import { User } from './types';
 
 export type Props = {
-    room: string;
-    name: string;
-    color: string;
+    user: User;
     onSave: (room: string, name: string, color: string) => void;
 }
 
 export default function SetUserDialog(props: Props) {
-    const { onSave } = props;
+    const { user, onSave } = props;
     const [isOpen, setIsOpen] = useState(true);
-    const [room, setRoom] = useState(props.room);
-    const [color, setColor] = useState(props.color);
-    const [name, setName] = useState(props.name);
+    const [room, setRoom] = useState(user.room);
+    const [color, setColor] = useState(user.color);
+    const [name, setName] = useState(user.name);
 
 
     function closeModal() {

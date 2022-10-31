@@ -1,14 +1,9 @@
 import React, { useState, Suspense } from "react";
 import { uniqueNamesGenerator, starWars, colors } from "unique-names-generator";
 import SetUserDialog from './setUserDialog';
+import { User } from "./types";
 
 const Chat = React.lazy(() => import('./chat'));
-
-export type User = {
-    room: string;
-    name: string;
-    color: string;
-}
 
 const USER: User = {
     room: 'chatterbox',
@@ -34,7 +29,7 @@ export default function Home() {
 
     return (
         <>
-            <SetUserDialog room={USER.room} name={USER.name} color={USER.color} onSave={OnSaved} />
+            <SetUserDialog user={USER} onSave={OnSaved} />
             {chatComponent}
         </>
     )

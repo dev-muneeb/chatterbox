@@ -2,16 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from 'socket.io-client';
 import { FixedSizeList as List, ListChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { User } from "./index";
+import { Message, User } from "./types";
 
 export type Props = {
     user: User
-}
-
-export type Message = {
-    text: string;
-    user: User;
-    server?: boolean;
 }
 
 let socket: Socket;
