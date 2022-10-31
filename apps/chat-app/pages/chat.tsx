@@ -29,7 +29,7 @@ export default function Chat(props: Props) {
         return () => {
             socket.disconnect()
         };
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         viewRef?.current?.scrollToItem(messages.length - 1);

@@ -10,5 +10,3 @@ export type Message = {
     user: User;
     server?: boolean;
 }
-
-export default null;
