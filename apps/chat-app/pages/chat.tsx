@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { FixedSizeList as List, ListChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Message, User } from "./types";
+import { CHAT_SERVER_URL } from "./constant";
 
 export type Props = {
     user: User
@@ -17,7 +18,7 @@ export default function Chat(props: Props) {
     const viewRef = useRef<List<any>>(null);
 
     useEffect(() => {
-        socket = io("http://localhost:5500", {
+        socket = io(CHAT_SERVER_URL, {
             transports: ["websocket"],
             auth: user
         });
