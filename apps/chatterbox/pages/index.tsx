@@ -5,6 +5,7 @@ import SetUserDialog from './setUserDialog';
 
 
 const USER: User = {
+    room: 'chatterbox',
     name: uniqueNamesGenerator({
         dictionaries: [starWars]
     }),
@@ -15,11 +16,11 @@ const USER: User = {
 
 export default function Home() {
     const [user, setUser] = useState<User | null>(null);
-    const OnSaved = (name: string, color: string) => setUser({ name, color });
+    const OnSaved = (room: string, name: string, color: string) => setUser({ room, name, color });
 
     return (
         <>
-            <SetUserDialog name={USER.name} color={USER.color} onSave={OnSaved} />
+            <SetUserDialog room={USER.room} name={USER.name} color={USER.color} onSave={OnSaved} />
             {user ? <Chat user={user || USER} /> : null}
         </>
     )

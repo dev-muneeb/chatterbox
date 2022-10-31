@@ -3,28 +3,35 @@ import { Fragment, useState } from 'react'
 import ColorCombo from './colorCombo';
 
 export type Props = {
+    room: string;
     name: string;
     color: string;
-    onSave: (name: string, color: string) => void;
+    onSave: (room: string, name: string, color: string) => void;
 }
 
 export default function SetUserDialog(props: Props) {
     const { onSave } = props;
-    let [isOpen, setIsOpen] = useState(true);
-    let [color, setColor] = useState(props.color);
-    let [name, setName] = useState(props.name);
+    const [isOpen, setIsOpen] = useState(true);
+    const [room, setRoom] = useState(props.room);
+    const [color, setColor] = useState(props.color);
+    const [name, setName] = useState(props.name);
+
 
     function closeModal() {
         setIsOpen(false)
     }
 
     function saveHandler() {
-        onSave(name, color);
+        onSave(room, name, color);
         setIsOpen(false)
     }
 
-    function changeHandler(e: React.FormEvent<HTMLInputElement>) {
+    function changeNameHandler(e: React.FormEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)
+    }
+
+    function changeRoomHandler(e: React.FormEvent<HTMLInputElement>) {
+        setRoom(e.currentTarget.value)
     }
 
     return (
@@ -62,7 +69,10 @@ export default function SetUserDialog(props: Props) {
                                         Please enter your name and select color
                                     </Dialog.Title>
                                     <div className="mt-4">
-                                        <input onChange={changeHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter Name" value={name} />
+                                        <input onChange={changeRoomHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter room name" value={room} />
+                                    </div>
+                                    <div className="mt-4">
+                                        <input onChange={changeNameHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter your name" value={name} />
                                     </div>
                                     <div className="mt-4">
                                         <ColorCombo selectedColor={color} onSelectColor={(color) => setColor(color)} />

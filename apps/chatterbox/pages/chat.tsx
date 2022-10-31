@@ -8,6 +8,7 @@ export type Props = {
 }
 
 export type User = {
+    room: string;
     name: string;
     color: string;
 }
@@ -15,6 +16,7 @@ export type User = {
 export type Message = {
     text: string;
     user: User;
+    server?: boolean;
 }
 
 let socket: Socket;
@@ -60,7 +62,7 @@ export default function Chat(props: Props) {
         return (
             <div key={index} className="p-3 dark:text-white" style={style}>
                 <span className="`text-md font-bold mr-2" style={{ color: item.user.color }}>{item.user.name}</span>
-                {item.text}
+                <span className={`${item.server ? 'italic': ''}`}>{item.text}</span>
             </div>
         );
     }
