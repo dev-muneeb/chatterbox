@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from 'socket.io-client';
-import { FixedSizeList as List, ListChildComponentProps } from "react-window";
+import { VariableSizeList as List, } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Message, User } from "./types";
 import { CHAT_SERVER_URL } from "./constant";
+import { useWindowResize } from './useWindowResize';
+import { ChatRow } from './chatRow';
 
 export type Props = {
     user: User
@@ -16,6 +18,13 @@ export default function Chat(props: Props) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState<Message>();
     const viewRef = useRef<List<any>>(null);
+    const sizeMap = useRef<any>({});
+    const setSize = useCallback((index: number, size: number | undefined) => {
+        sizeMap.current = { ...sizeMap.current, [index]: size };
+        viewRef?.current?.resetAfterIndex(index);
+    }, []);
+    const getSize = (index: number) => sizeMap?.current[index] || 50;
+    const [windowWidth] = useWindowResize();
 
     useEffect(() => {
         socket = io(CHAT_SERVER_URL, {
@@ -47,16 +56,6 @@ export default function Chat(props: Props) {
         }
     }
 
-    const Row = ({ index, style }: ListChildComponentProps) => {
-        const item = messages[index]
-        return (
-            <div key={index} className="p-3 dark:text-white" style={style}>
-                <span className="`text-md font-bold mr-2" style={{ color: item.user.color }}>{item.user.name}</span>
-                <span className={`${item.server ? 'italic': ''}`}>{item.text}</span>
-            </div>
-        );
-    }
-
     return (
         <div className="mt-5 mr-5 ml-5 mb-5" style={{ height: '80vh' }}>
             <AutoSizer>
@@ -65,11 +64,20 @@ export default function Chat(props: Props) {
                         className="text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
                         height={height}
                         itemCount={messages.length}
-                        itemSize={40}
+                        itemSize={getSize}
                         width={width}
                         ref={viewRef}
                     >
-                        {Row}
+                        {({ index, style }) => (
+                            <div key={index} style={style}>
+                                <ChatRow
+                                    data={messages}
+                                    index={index}
+                                    setSize={setSize}
+                                    windowWidth={windowWidth}
+                                />
+                            </div>
+                        )}
                     </List>
                 )}
             </AutoSizer>
