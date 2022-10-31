@@ -1,7 +1,9 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import * as dotenv from 'dotenv';
+dotenv.config();
 const httpServer = createServer();
-const port = 5500;
+const port = process.env.PORT || 5500;
 const io = new Server(httpServer, {
     cors: {
         origin: "*",
@@ -22,5 +24,5 @@ io.on('connection', (socket) => {
     });
 });
 httpServer.listen(port, () => {
-    console.log(`⚡️[chatserver]: running`);
+    console.log(`⚡️[chat-server]: running`);
 });

@@ -15,5 +15,6 @@
   "globalDependencies": [
     ".env",
     "tsconfig.json"
-  ]
+  ],
+  "globalEnv": ["PORT"] 
 }
