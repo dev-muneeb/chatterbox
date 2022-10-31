@@ -1,9 +1,9 @@
 import React, { useState, Suspense } from "react";
 import { uniqueNamesGenerator, starWars, colors } from "unique-names-generator";
-import SetUserDialog from './setUserDialog';
-import { User } from "./types";
+import SetUserDialog from '../core/setUserDialog';
+import { User } from "../core/types";
 
-const Chat = React.lazy(() => import('./chat'));
+const Chat = React.lazy(() => import('../core/chat'));
 
 const USER: User = {
     room: 'chatterbox',
