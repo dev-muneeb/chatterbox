@@ -19,9 +19,11 @@ export default function Chat(props: Props) {
 
     useEffect(() => {
         socket = io(CHAT_SERVER_URL, {
-            transports: ["websocket"],
+            transports: ["websocket", "polling"],
             auth: user
-        });
+        }).on("connect_error", () => {
+            socket.io.opts.transports = ["polling", "websocket"];
+        });;
         socket.on('chat-message', (message: Message) => {
             setMessages((prev) => [...prev, message]);
         });
