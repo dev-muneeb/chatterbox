@@ -8,7 +8,7 @@
     "start": "node dist/index.js",
     "build": "tsc"
   },
-  "type": "module",
+  "type": "commonjs",
   "keywords": [],
   "author": "dev-muneeb",
   "license": "ISC",
