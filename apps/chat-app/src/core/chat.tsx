@@ -21,9 +21,7 @@ export default function Chat(props: Props) {
         socket = io(CHAT_SERVER_URL, {
             transports: ["websocket", "polling"],
             auth: user
-        }).on("connect_error", () => {
-            socket.io.opts.transports = ["polling", "websocket"];
-        });;
+        });
         socket.on('chat-message', (message: Message) => {
             setMessages((prev) => [...prev, message]);
         });
