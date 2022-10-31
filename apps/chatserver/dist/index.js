@@ -10,12 +10,12 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
     console.log(`socket ${socket.id} connected`);
     socket.join("room");
-    io.to("room").emit('chat-message', { ...socket.handshake.auth, text: 'has joined the chat' });
+    io.to("room").emit('chat-message', { user: socket.handshake.auth, text: 'has joined the chat' });
     socket.on('chat-message', (msg) => {
         io.to("room").emit('chat-message', msg);
     });
     socket.on("disconnect", (reason) => {
-        io.to("room").emit('chat-message', { ...socket.handshake.auth, text: 'has left the chat' });
+        io.to("room").emit('chat-message', { user: socket.handshake.auth, text: 'has left the chat' });
         socket.leave("room");
         console.log(`socket ${socket.id} disconnected due to ${reason}`);
     });
