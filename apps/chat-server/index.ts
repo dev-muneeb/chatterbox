@@ -36,5 +36,3 @@ io.on('connection', (socket) => {
 httpServer.listen(port, () => {
   console.log(`⚡️[chat-server]: running`);
 });
-
-export default httpServer;
