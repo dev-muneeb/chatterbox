@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useState, Suspense } from "react";
 import { uniqueNamesGenerator, starWars } from "unique-names-generator";
 import { COLORS } from "../core/constant";
@@ -23,13 +24,17 @@ export default function Home() {
     let chatComponent = null;
     if (user) {
         chatComponent =
-        (<Suspense fallback={<div>Loading...</div>}>
-            <Chat user={user} />
-        </Suspense>);
+            (<Suspense fallback={<div>Loading...</div>}>
+                <Chat user={user} />
+            </Suspense>);
     }
 
     return (
         <>
+            <Head>
+                <title>ChatterBox</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
             <SetUserDialog user={USER} onSave={OnSaved} />
             {chatComponent}
         </>
