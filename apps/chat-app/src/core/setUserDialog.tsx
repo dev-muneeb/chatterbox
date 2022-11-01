@@ -62,13 +62,13 @@ export default function SetUserDialog(props: Props) {
                             >
                                 <Dialog.Panel className="h-96 w-full max-w-md transform overflow-hidden rounded-2xl text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-6 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
-                                        as="h3"
-                                        className="text-lg font-medium leading-6 text-white"
+                                        as="h2"
+                                        className="text-center text-lg font-lg font-bold leading-6 text-white"
                                     >
-                                        Please enter your name and select color
+                                        ChatterBox
                                     </Dialog.Title>
                                     <div className="mt-4">
-                                        <input onChange={changeRoomHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter room name" value={room} />
+                                        <input onChange={changeRoomHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter lobby name" value={room} />
                                     </div>
                                     <div className="mt-4">
                                         <input onChange={changeNameHandler} className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter your name" value={name} />
