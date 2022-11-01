@@ -1,6 +1,7 @@
 # ChatterBox
 
-Simple Chat Application in NextJS using socket.io
+Simple Chat Application in NextJS 13 using socket.io - Turborepo
+
 [Live Demo](https://chatterbox-tau.vercel.app)
 
 
@@ -8,12 +9,12 @@ Simple Chat Application in NextJS using socket.io
 
 ```
 pnpm install
-pnpm run dev
+pnpm dev
 ```
 
 ### Build
 
 ```
 pnpm install
-pnpm run build
+pnpm build
 ```
