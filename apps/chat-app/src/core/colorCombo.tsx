@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { colors } from "unique-names-generator";
+import { COLORS } from './constant';
 
 export type Props = {
     selectedColor: string;
@@ -30,7 +30,7 @@ export default function ColorCombo(props: Props) {
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="absolute mt-1 max-h-40 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {colors.map((color, index) => (
+                        {COLORS.map((color, index) => (
                             <Listbox.Option
                                 key={index}
                                 className={({ active }) =>

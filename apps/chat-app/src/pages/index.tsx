@@ -1,5 +1,6 @@
 import React, { useState, Suspense } from "react";
-import { uniqueNamesGenerator, starWars, colors } from "unique-names-generator";
+import { uniqueNamesGenerator, starWars } from "unique-names-generator";
+import { COLORS } from "../core/constant";
 import SetUserDialog from '../core/setUserDialog';
 import { User } from "../core/types";
 
@@ -11,7 +12,7 @@ const USER: User = {
         dictionaries: [starWars]
     }),
     color: uniqueNamesGenerator({
-        dictionaries: [colors]
+        dictionaries: [COLORS]
     }),
 };
 
