@@ -57,7 +57,7 @@ export default function Chat(props: Props) {
     }
 
     return (
-        <div className="mt-5 mr-5 ml-5 mb-5" style={{ height: '80vh' }}>
+        <div className="mt-5 mr-5 ml-5 mb-5" style={{ height: '75vh' }}>
             <p className="text-blue-400 text-right text-2xl mb-5">Lobby: <span className="font-bold">{user.room}</span></p>
             <AutoSizer>
                 {({ height, width }) => (
