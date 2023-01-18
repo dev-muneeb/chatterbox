@@ -30,6 +30,7 @@ const http_1 = require("http");
 const socket_io_1 = require("socket.io");
 const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const openai_1 = require("openai");
 dotenv.config();
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -39,13 +40,33 @@ const io = new socket_io_1.Server(httpServer, {
         origin: "*",
     }
 });
+const configuration = new openai_1.Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 io.on('connection', (socket) => {
     const room = socket.handshake.auth.room;
     console.log(`socket ${socket.id} connected for ${room}`);
     socket.join(room);
     io.to(room).emit('chat-message', { user: socket.handshake.auth, text: 'has joined the chat', server: true });
-    socket.on('chat-message', (msg) => {
+    socket.on('chat-message', async (msg) => {
         io.to(room).emit('chat-message', msg);
+        if (msg.text.toLowerCase().startsWith("!bot ")) {
+            const message = msg.text.substring(5, msg.text.length).trim();
+            const openai = new openai_1.OpenAIApi(configuration);
+            const response = await openai.createCompletion({
+                model: "text-ada-001",
+                prompt: message,
+                max_tokens: 200,
+                temperature: 0.9,
+                top_p: 1,
+                frequency_penalty: 0.0,
+                presence_penalty: 0.6,
+            });
+            msg.text = response?.data.choices.map(c => c.text).join(' ');
+            msg.user = { name: 'Bot', color: 'Tomato' };
+            msg.server = true;
+            io.to(room).emit('chat-message', msg);
+        }
     });
     socket.on("disconnect", (reason) => {
         io.to(room).emit('chat-message', { user: socket.handshake.auth, text: 'has left the chat', server: true });

@@ -16,5 +16,5 @@
     ".env",
     "tsconfig.json"
   ],
-  "globalEnv": ["PORT"] 
+  "globalEnv": ["PORT", "OPENAI_API_KEY"] 
 }
