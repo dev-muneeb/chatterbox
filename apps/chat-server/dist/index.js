@@ -50,22 +50,29 @@ io.on('connection', (socket) => {
     io.to(room).emit('chat-message', { user: socket.handshake.auth, text: 'has joined the chat', server: true });
     socket.on('chat-message', async (msg) => {
         io.to(room).emit('chat-message', msg);
-        if (msg.text.toLowerCase().startsWith("!bot ")) {
-            const message = msg.text.substring(5, msg.text.length).trim();
-            const openai = new openai_1.OpenAIApi(configuration);
-            const response = await openai.createCompletion({
-                model: "text-ada-001",
-                prompt: message,
-                max_tokens: 200,
-                temperature: 0.9,
-                top_p: 1,
-                frequency_penalty: 0.0,
-                presence_penalty: 0.6,
-            });
-            msg.text = response?.data.choices.map(c => c.text).join(' ');
+        if (msg.text.toLowerCase().startsWith("@bot ")) {
             msg.user = { name: 'Bot', color: 'Tomato' };
             msg.server = true;
-            io.to(room).emit('chat-message', msg);
+            try {
+                const message = msg.text.substring(5, msg.text.length).trim();
+                const openai = new openai_1.OpenAIApi(configuration);
+                const response = await openai.createCompletion({
+                    model: "text-ada-001",
+                    prompt: message,
+                    max_tokens: 200,
+                    temperature: 0.9,
+                    top_p: 1,
+                    frequency_penalty: 0.0,
+                    presence_penalty: 0.6,
+                });
+                msg.text = response?.data.choices.map(c => c.text).join(' ');
+                io.to(room).emit('chat-message', msg);
+            }
+            catch (err) {
+                msg.text = "I m not available at this time";
+                io.to(room).emit('chat-message', msg);
+                console.dir(err);
+            }
         }
     });
     socket.on("disconnect", (reason) => {

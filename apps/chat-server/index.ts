@@ -30,6 +30,8 @@ io.on('connection', (socket) => {
     io.to(room).emit('chat-message', msg);
     if (msg.text.toLowerCase().startsWith("@bot "))
     {
+      msg.user = { name: 'Bot', color: 'Tomato' }
+      msg.server = true;
       const message = msg.text.substring(5, msg.text.length).trim();
       const openai = new OpenAIApi(configuration);
       const response = await openai.createCompletion({
@@ -41,10 +43,15 @@ io.on('connection', (socket) => {
         frequency_penalty: 0.0,
         presence_penalty: 0.6,
       });
-      msg.text = response?.data.choices.map(c => c.text).join(' ');
-      msg.user = { name: 'Bot', color: 'Tomato' }
-      msg.server = true;
-      io.to(room).emit('chat-message', msg);
+      try {
+        msg.text = response?.data.choices.map(c => c.text).join(' ')
+        io.to(room).emit('chat-message', msg);
+      } 
+      catch (err) {
+        msg.text = "I m not available at this time"
+        io.to(room).emit('chat-message', msg);
+        console.log(err);
+      }
     }
   });
 
